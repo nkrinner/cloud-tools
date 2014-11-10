@@ -77,7 +77,7 @@ function backup()
   rccouchdb stop
 
   pushd / >/dev/null
-  echo_and_log "backing up to $FILE..."
+  echo_and_log "backing up to $FILE ..."
   tar -czf "$FILE" $XFILES $BFILES
   popd >/dev/null
 
