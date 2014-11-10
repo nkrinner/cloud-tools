@@ -57,6 +57,8 @@ function echo_and_log ()
   echo -e $@ >&3
 }
 
+
+## TODO remove this, we never call the function
 die() 
 {
   # Send empty line & error to logfile
