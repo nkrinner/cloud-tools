@@ -67,7 +67,6 @@ FILEDEF=/tmp/backup-crowbar.tar.gz
 function restore_files()
 {
   # restore all or specific files from backup tarball
-  echo_with_timestamp "Restoring backup"
   pushd / >/dev/null
   echo "Restoring from $FILE..."
   tar -xf "$FILE" $@
@@ -115,7 +114,7 @@ function check_resolv_conf
 function backup()
 {
   # create the backup tarball
-  echo_with_timestamp "Creating backup"
+  echo "Creating backup"
   /etc/cron.daily/chef-couchdb-cleanup >/dev/null 2>&1 # to get smaller backups
   extract_dns_forwarders
   rccouchdb stop
@@ -133,7 +132,7 @@ function cleanup()
 {
   # stop crowbar related services and delete its config files
   # to be used on a deployed crowbar
-  echo_with_timestamp "Cleaning up the system"
+  echo "Cleaning up the system"
   extract_dns_forwarders
   restore_dns_forwarders
   pushd / >/dev/null
@@ -152,7 +151,7 @@ function cleanup()
 function purge()
 {
   # cleanup + uninstall all crowbar related packages
-  echo_with_timestamp "Purging the system"
+  echo "Purging the system"
   cleanup
   zypper -n rm `rpm -qa|grep -e crowbar -e chef -e rubygem -e susecloud` couchdb createrepo erlang rabbitmq-server sleshammer yum-common bind bind-chrootenv dhcp-server tftp
   rm -rf /opt/dell /var/log/{rabbitmq,nodes,crowbar,couchdb,chef,barclamps} /var/lib/{chef,couchdb,crowbar,dhcp,named,rabbitmq} /var/cache/chef /var/run/{chef,crowbar,named,rabbitmq} /var/chef /etc/sysconfig/{dhcpd,named,rabbitmq-server} /etc/{bind,chef,dhcp3,crowbar}
@@ -193,7 +192,7 @@ function reconfigure_rabbitmq()
 function restore()
 {
   # restore crowbar from tarball
-  echo_with_timestamp "Restoring the system from backup"
+  echo "Restoring the system from backup"
 
 
   restore_dns_forwarders frombackup
@@ -260,13 +259,6 @@ function restore()
     echo "       Please see /var/log/crowbar/production.log for details."
     exit 1
   fi
-}
-
-function echo_with_timestamp()
-{
-  echo $@
-  echo "$(date '+%F %T %z'): $@" >> $LOGFILE
-
 }
 
 function help()
